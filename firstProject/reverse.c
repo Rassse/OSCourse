@@ -5,6 +5,8 @@
 // https://www.youtube.com/watch?v=6wXZ_m3SbEs //
 // I learned here also about struct and typedef //
 // https://www.youtube.com/watch?v=e9OXqEPF-5M //
+
+// let's struct a node to make it easier accessing elements in it //
 typedef struct node{
     char *line;
     struct node *next;
@@ -77,8 +79,8 @@ int main(int argc, char *argv[]) {
 }
 // I learned here to free the list //
 // https://stackoverflow.com/questions/6417158/c-how-to-free-nodes-in-the-linked-list //
+// We need to free the list from the memory //
 void freeList(Node *head) {
-
     while (head != NULL) {
         Node *temp = head;
         head = head->next;
@@ -87,6 +89,7 @@ void freeList(Node *head) {
     }
 }
 
+// Implementation of reverseprint with pointeirs head, next, and line //
 void reversePrint(Node *head, FILE *output) {
     if(head == NULL) {
         return;
@@ -99,15 +102,18 @@ void reversePrint(Node *head, FILE *output) {
 }
 
 Node* readFile(FILE *input) {
+    // Initializing the pointers to use in reading file //
     Node *head = NULL;
     Node *tail = NULL;
     char *line = NULL;
     size_t l = 0;
     ssize_t read;
 
+    // making a condition when it can read a file until EOF occurs //
     while ((read = getline(&line, &l, input)) != -1) {
         /* Deepseek helped me fix a problem where newlines where added and I needed to
         add a check for the newlines in nodes */
+        // Let's make a condition for end of file //
         if (read > 0 && line[read-1] == '\n') {
             line[read-1] = '\0';
         }
