@@ -92,7 +92,9 @@ void reversePrint(Node *head, FILE *output) {
         return;
     }
     reversePrint(head->next, output);
-    fprintf(output, "%s", head->line);
+    /* Deepseek helped me to fix a bug where extra lines where created //
+    and here it recommended me to add a newline \n to compensate the changes in readFile */
+    fprintf(output, "%s\n", head->line);
 
 }
 
@@ -104,6 +106,11 @@ Node* readFile(FILE *input) {
     ssize_t read;
 
     while ((read = getline(&line, &l, input)) != -1) {
+        /* Deepseek helped me fix a problem where newlines where added and I needed to
+        add a check for the newlines in nodes */
+        if (read > 0 && line[read-1] == '\n') {
+            line[read-1] = '\0';
+        }
         // Here I got inspiration for the reverse linked list //
         // https://www.youtube.com/watch?v=sYcOK51hl-A //
         Node *node = malloc(sizeof(Node));

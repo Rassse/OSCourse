@@ -5,11 +5,11 @@
 int main(int argc, char *argv[]) {
     // Deepseek helped me to check for the arguments correctly, otherwise my other function was always false //
     if (argc < 2) {
-        printf(stderr, "my-grep: searchterm [file ...]");
+        fprintf(stderr, "my-grep: searchterm [file ...]\n");
         exit(1);
     }
     char *search_term = argv[1];
-    char buffer[255];
+    char *line = NULL;
     size_t len = 0;
     // Deepseek helped me to create a ssize_t C variable read to aid in my file reading or input reading //
     // So I can access one variable instead of complex structure //
@@ -26,11 +26,10 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-
-    if (argc == 3) {
+    else {
         FILE *file = fopen(argv[2], "r");
         if(file == NULL) {
-            perror(stderr, "my-grep: cannot open file\n");
+            fprintf(stderr, "my-grep: cannot open file\n");
             exit(1);
         }
         char *line = NULL;
@@ -44,7 +43,6 @@ int main(int argc, char *argv[]) {
                 // Deepseek helped me take an extra line away because getline already passes a newline //
             }
         }
-
         fclose(file);
         free(line);
     }

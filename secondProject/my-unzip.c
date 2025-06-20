@@ -16,15 +16,13 @@ int main(int argc, char *argv[]) {
 
        int count;
        char ch;
-       // Deepseek helped me to fread both of the int ant char in the zip file, rather than making two functions for it //
+       // Deepseek helped me to fread both of the int and char in the zip file, rather than making two functions for it //
        while (fread(&count, sizeof(int), 1, input) == 1 && fread(&ch, sizeof(char), 1, input) == 1) {
-            for (int j = 0; j < count; j++) {
+            for (int i = 0; i < count; i++) {
                 fputc(ch, stdout);
             }
        }
        fclose(input);
-
     }
     return 0;
 }
-
