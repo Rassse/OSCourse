@@ -7,6 +7,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     int j = 0;
+    // let's go through the files in the arguments with a for-loop //
     for (int i = 1; i < argc; i++) {
         // I learned here in these videos to read file //
         // https://www.youtube.com/watch?v=MQIF-WMUOL8 //
