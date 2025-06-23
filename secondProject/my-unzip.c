@@ -8,6 +8,7 @@ int main(int argc, char *argv[]) {
     }
     // checking arguments //
     for (int i = 1; i < argc; i++) {
+       // better to use "rb" = read binary for reading this compressed file than regular "r" //
        FILE *input = fopen(argv[i], "rb");
        if (input == NULL) {
            perror("Error occured opening the file.");
