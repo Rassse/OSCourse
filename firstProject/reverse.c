@@ -26,24 +26,17 @@ int main(int argc, char *argv[]) {
     FILE *text_input = NULL;
     // Here I learned the difference between argc, argv and their usages, also from lectures in the course //
     // https://www.tutorialspoint.com/cprogramming/c_command_line_arguments.htm //
+    if (argc > 3) {
+        fprintf(stderr, "usage: reverse <input> <output>\n");
+        exit(1);
+    }
     if(argc == 1) {
         head = readFile(stdin);
         reversePrint(head, stdout);
     } else if (argc == 2) {
         text_input = fopen(argv[1], "r");
         if (text_input == NULL) {
-            fprintf(stderr, "There was an error opening the file!\n");
-            exit(1);
-        }
-        head = readFile(text_input);
-        reversePrint(head, stdout);
-        fclose(text_input);
-    }
-
-    else if(argc == 2) {
-        text_input = fopen(argv[1], "r");
-        if (text_input == NULL) {
-            fprintf(stderr, "There was an error opening the file!\n");
+            fprintf(stderr, "error: cannot open file '%s'\n", argv[1]);
             exit(1);
         }
         head = readFile(text_input);
@@ -55,17 +48,17 @@ int main(int argc, char *argv[]) {
         // I learned here to compare the user parameter in the kernel and the argument //
         // https://www.programiz.com/c-programming/library-function/string.h/strcmp //
         if (strcmp(argv[1], argv[2]) == 0)  {
-            fprintf(stderr, "Given input and output files are same, they must differ.\n");
+            fprintf(stderr, "Input and output file must differ\n");
             exit(1);
         }
         text_input = fopen(argv[1], "r");
         if (text_input == NULL) {
-            fprintf(stderr, "There was an error opening the file!\n");
+            fprintf(stderr, "error: cannot open file '%s'\n", argv[1]);
             exit(1);
         }
         output = fopen(argv[2], "w");
         if (output == NULL) {
-            fprintf(stderr, "There was an error creating the file!\n");
+            fprintf(stderr, "error: cannot create file '%s'\n", argv[2]);
             exit(1);
         }
         head = readFile(text_input);
@@ -121,7 +114,7 @@ Node* readFile(FILE *input) {
         // https://www.youtube.com/watch?v=sYcOK51hl-A //
         Node *node = malloc(sizeof(Node));
         if (!node) {
-            fprintf(stderr, "Memory allocation failed, try again\n");
+            fprintf(stderr, "malloc failed\n");
             exit(1);
         }
         node->line = strdup(line);
