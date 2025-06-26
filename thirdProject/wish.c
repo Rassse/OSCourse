@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
         // error handling when file doesn't exist //
         FILE *fp = fopen(argv[1], "r");
         if (fp == NULL) {
-            perror("There was an error opening the file");
+            write(STDERR_FILENO, error_message, strlen(error_message));
             return 0;
         }
         // when user types exit, the system exits with 0 //
