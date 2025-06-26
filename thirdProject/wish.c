@@ -54,7 +54,11 @@ void cd(char *args[], int argc) {
     char *dir;
     // If there is one argument, so only 'cd', change the directory home //
     if (argc == 1) {
+        // I learned here to use getenv function to search for the HOME directory //
+        // https://www.tutorialspoint.com/c_standard_library/c_function_getenv.htm //
+        // let's navigate to home directory with cd command //
         dir = getenv("HOME");
+        // let's test the directory is not null //
         if (dir == NULL) {
             write(STDERR_FILENO, error_message, strlen(error_message));
             return;
