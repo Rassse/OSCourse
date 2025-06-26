@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <unistd.h>
 
 
 // Deepseek taught me to use global variable to allocate memory for the user input //
 // Global variable is easy to change afterwards, when the code expands //
 #define MAX 256
+char error_message[30] = "An error has occurred\n";
+
 
 // I learned here to list file directories //
 // https://www.youtube.com/watch?v=0pjtn6HGPVI //
@@ -20,7 +23,7 @@ int ls(char *path) {
 
     // Check if the directory is null, then raise error message //
     if (directory == NULL) {
-        printf("Error opening the directory.\n");
+        write(STDERR_FILENO, error_message, strlen(error_message));
         return 0;
     }
     // going through the entries and //
@@ -36,15 +39,36 @@ int ls(char *path) {
 
     }
     if (closedir(directory) == -1) {
-        printf("Error closing the directory.\n");
+        write(STDERR_FILENO, error_message, strlen(error_message));
         return 1;
     }
 
     return 0;
 }
 
+// I learned here to change directory //
+// https://www.youtube.com/watch?v=g7tqnYfmJ2s //
+void cd(char *args[], int argc) {
+    // let's create a pointer to a directory //
+    char *dir;
+    // If there is one argument, so only 'cd', change the directory home //
+    if (argc == 1) {
+        dir = getenv("HOME");
+        if (dir == NULL) {
+            write(STDERR_FILENO, error_message, strlen(error_message));
+            return;
+        }
+
+    }
+    // here we change the directory home, and if it doesn't work, raise STDERR_FILENO //
+    if (chdir(dir) != 0) {
+        write(STDERR_FILENO, error_message, strlen(error_message));
+    }
+}
+
 int main(int argc, char *argv[]) {
     char input[MAX];
+    char *args[5];
     /* Deepseek helped me to run while command checking number 1 and changing it to exit 0, instead of
        comparing the string with strcmp to "exit"  */
     // printing the wish> to console interactively, until user types "exit" //
@@ -63,6 +87,11 @@ int main(int argc, char *argv[]) {
              == 0 condition to the else if */
             else if (strcmp(input, "ls") == 0) {
                 ls(NULL);
+            }
+            else if (strcmp(input, "cd") == 0) {
+                // ChatGPT helped me to create args variable to fix my logic in cd function //
+                char *args[] = {"cd", NULL};
+                cd(args, 1);
             }
         }
      }
