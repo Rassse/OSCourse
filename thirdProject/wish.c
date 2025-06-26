@@ -17,6 +17,7 @@ int ls(char *path) {
     DIR *directory;
     struct dirent *entry;
 
+    // let's check if the path is null, then dir_path is set to ".", otherwise, dir_path is path
     const char *dir_path = (path == NULL) ? "." : path;
 
     directory = opendir(dir_path);
